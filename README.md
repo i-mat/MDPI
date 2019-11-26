@@ -1,2 +1,2 @@
 # MDPI
-small paper 同MDPI
+small paper to MDPI
