@@ -23,17 +23,17 @@
 %\newcommand{\orcidauthorB}{0000-0000-000-000X} % Add \orcidB{} behind the author's name
 
 % Authors, for the paper (add full first names)
-\Author{Zihao Li $^{1}$,Shuang Song $^{1,}$*, Li Liu $^{2,}$* and Max Q.-H. Meng, Fellow, IEEE $^{2,}$}
+\Author{Tao Ma $^{1}$,Fan Zhang $^{1}$,Shuang Song $^{1,}$* and Max Q.-H. Meng, Fellow, IEEE $^{2,}$}
 
 % Authors, for metadata in PDF
-\AuthorNames{Zihao Li, Shuang Song, Li Liu and  Max Q.-H. Meng}
+\AuthorNames{Tao Ma, Fan Zhang, Shuang Song and  Max Q.-H. Meng}
 
 % Affiliations / Addresses (Add [1] after \address if there is only one affiliation.)
-\address{$^{1}$ \quad School of Mechanical Engineering and Automation, Harbin Institute of Technology, Shenzhen 518055, China;lzh\_lejou@163.com (Z.L.);songshuang@hit.edu.cn (S.S.)\\
-$^{2}$ \quad Robotics,Perception and Artificial Intelligence Lab,The Chinese University of Hong Kong, N.T., Hong Kong 999077, China;liliu@cuhk.edu.hk (L.L.);qhmeng@ee.cuhk.edu.hk (M.Q.H.M.)}
+\address{$^{1}$ \quad School of Mechanical Engineering and Automation, Harbin Institute of Technology, Shenzhen 518055, China;imat24@outlook.com (T.M.);songshuang@hit.edu.cn (S.S.)\\
+$^{2}$ \quad Robotics,Perception and Artificial Intelligence Lab,The Chinese University of Hong Kong, N.T., Hong Kong 999077, China;qhmeng@ee.cuhk.edu.hk (M.Q.H.M.)}
 
 % Contact information of the corresponding author
-\corres{Correspondence: songshuang@hit.edu.cn(S.S.);liliu@cuhk.edu.hk(L.L.)}
+\corres{Correspondence: songshuang@hit.edu.cn(S.S.)}
 
 % Current address and/or shared authorship
 %\firstnote{Current address: Harbin Institute of Technology (Shenzhen), Shenzhen, China, 518055}
@@ -131,10 +131,11 @@ The rest of this paper is organized as follows. The proposed methods will be int
 The proposed needle tip estimation method in successive transverse US images can be divided in three stages: needle detection, needle shape tracking and tip estimation. The processing diagram are shown in the Figure \ref{fig:2}. The needle location will be manually selected as an initial region of interest (ROI) by the binary method in the first US image. After that, the prediction of needle position from a Kalman Filter can be transformed in the transverse US images. At the same time, the next needle position in this ROI can be found through the histogram method. The KF is then updated for current precise needle position and prediction of the next position. After all the cross sections of needle have been collected, the needle shape can be fitted by curve fitting method (part C in Figure \ref{fig:2}). Finally, the position of the needle tip can be estimated from the curve fitting result based on the length of the needle. In this study, the ROI is set as a square window with the length of three times larger than the needle diameter and its center represents the needle position. Needle detection (part B in Figure \ref{fig:2}) is mainly about the image processing, while Kalman filter is used for needle shape tracking (part A in Figure \ref{fig:2}).
 
 \begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{figures/2/f2.pdf}
-\captionsetup{width=16 cm,justification=centering}
-\caption{ The pipeline of curved needle tip estimation. As the ROI configuration finished, needle tracking with needle detection begins step by step. Part A shows the needle tracking by KF, while Part B shows the needle detection to locate the needle tip. Part C shows the shape construction and tip estimation.}\label{fig:2}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/2/f2.pdf}
+    \captionsetup{width=16 cm,justification=centering}
+    \caption{ The pipeline of curved needle tip estimation. As the ROI configuration finished, needle tracking with needle detection begins step by step. Part A shows the needle tracking by KF, while Part B shows the needle detection to locate the needle tip. Part C shows the shape construction and tip estimation.}
+    \label{fig:2}
 \end{figure}
 
 \subsection{Needle detection }
@@ -150,23 +151,7 @@ During the experiment, a histogram method is proposed to find the needle accurat
 The histogram method contains intensity normalization and background reinforce.
 The histogram method tends to find an area of high intensity pixels, which intends to find the upper face of the needle and then locate needle based on the diameter.
 The background reinforce part can be described as follows:
-%\begin{equation}
-%P_{I_k} = \frac{n_{I_k}}{M}
-%\end{equation}
-%\begin{equation}
-%\mathop{\arg\min}_{t} \sum_{t}^{255} P_{I_k} \geq \delta
-%\end{equation}
-%where ${I_k}$ is the grey level of the pixel,and ${k\in[0,255]}$. ${P_{I_k}}$ is the percentage of ${I_k}$ pixel in grey level with the number ${n_{I_k}}$, M is the total number of the grey level pixel in the image, and t([0,255]) is the variable which ensures the sum of ${P_{I_k} \geq \delta}$, while ${\delta}$ is the percentage to limit the bright pixels. The equations can then be simplified by:
-%\begin{equation}
-%\mathop{\arg\min}_{t} \sum_{t}^{255} n_{r_k} \geq M\delta(=N)
-%\end{equation}
-%where N is the number to limit the bright area, and we set it to be 40.
-%\begin{mini*}|s|
-%{}{I_t}
-%{}{}
-%\addConstraint{\sum_{I_t}^{255} n_{I_k} \geq M\delta}
-%\addConstraint{I_t\in[0,255]}{}
-%\end{mini*}
+
 \begin{equation}
 \begin{aligned}
 \textrm{min} \quad & \quad I_t \\
@@ -224,15 +209,16 @@ The prediction stage intends to locate the needle position previously, and set t
 The update stage is the result of needle position after the measurement from histogram method.
 
 \begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{figures/2/f4_g1.pdf}
-\captionsetup{width=16 cm,justification=centering}
-\caption{
-Two steps of Kalman Filter.
-As the next US image is acquired, the previous state ${(x_{previous},y_{previous},z_{previous},\triangle x_{previous},\triangle y_{previous},\triangle z_{previous})}$ is used to predict the needle position ${(x_{prediction},y_{prediction},z_{prediction}}$, which then will be transformed to ${(I_{x\_prediction},I_{y\_prediction})}$ in the image as the center of ROI.
-The yellow square is the ROI corresponding to ${(I_{x\_prediction},I_{y\_prediction})}$ and the red one is the update step in KF by using the measurement data from needle detection to locate the needle with its center ${(I_{x\_update},I_{y\_update})}$ as the needle position.
-Finally, the measurement state ${(x_{m},y_{m},z_{m}, \triangle x_{m},\triangle y_{m},\triangle z_{m})}$ and the current state ${(x_{c},y_{c},z_{c}, \triangle x_{c},\triangle y_{c},\triangle z_{c})}$ can be obtained.
-}\label{fig:4}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/2/f4_g1.pdf}
+    \captionsetup{width=16 cm,justification=centering}
+    \caption{
+            Two steps of Kalman Filter.
+            As the next US image is acquired, the previous state ${(x_{previous},y_{previous},z_{previous},\triangle x_{previous},\triangle y_{previous},\triangle z_{previous})}$ is used to predict the needle position ${(x_{prediction},y_{prediction},z_{prediction}}$, which then will be transformed to ${(I_{x\_prediction},I_{y\_prediction})}$ in the image as the center of ROI.
+            The yellow square is the ROI corresponding to ${(I_{x\_prediction},I_{y\_prediction})}$ and the red one is the update step in KF by using the measurement data from needle detection to locate the needle with its center ${(I_{x\_update},I_{y\_update})}$ as the needle position.
+            Finally, the measurement state ${(x_{m},y_{m},z_{m}, \triangle x_{m},\triangle y_{m},\triangle z_{m})}$ and the current state ${(x_{c},y_{c},z_{c}, \triangle x_{c},\triangle y_{c},\triangle z_{c})}$ can be obtained.
+            }
+    \label{fig:4}
 \end{figure}
 
 The state prediction ${\hat{t}_i}$ intends to represent the prediction state of the transverse needle center position ${(x, y, z)}$ in the reference frame with the change of the needle position ${(\triangle x,\triangle y,\triangle z)}$ at sample ${i}$ according to the state t. ${(\triangle x,\triangle y,\triangle z)}$ are the difference between the previous needle position and the current needle position. ${t_i}$ is the result from the previous iteration which is as follows:
@@ -318,11 +304,12 @@ And the ROI for the next iteration is centered around the needle position of the
 Before tip estimation, 2D points should be transformed to 3D points based on the relationship of each frames. The relationship among the reference frame, probe frame, marker frame and image frame are specified in Figure \ref{fig:5}.
 
 \begin{figure}[H]
-\centering
-\includegraphics[width=8.2 cm]{figures/2/f5.pdf}
-\captionsetup{width=16 cm,justification=centering}
-\caption{The relationship of the frames.}\label{fig:5}
-\end{figure}
+	\centering
+	\includegraphics[width=8.2 cm]{figures/2/f5.pdf}
+	\captionsetup{width=16 cm,justification=centering}
+    \caption{The relationship of the frames.}
+    \label{fig:5}
+\end{figure}re
 
 As shown in Figure \ref{fig:5}, the image has one plane with 2 axis (axis x and axis y) and axis z is vertical to the image. Moreover, the probe has the completely same frame with image, except that the probe frame is designed in millimeters and the image frame is set in pixels. Equation (9) implies the transformation from image to reference:
 \begin{equation}
@@ -332,10 +319,10 @@ Where ${{Point}_1}$ and ${{Point}_2}$ are the points on the reference frame and 
 
 The tip estimation has two steps: curve fitting and tip estimation. It has been shown that the cubic line model can be used to estimate the needle. In this study, third-order curve line is used for the shape construction where the equations can be written as:
 \begin{equation}
-f(x)=\sum_{k=0}^{3}a_k x^k
+	f(x)=\sum_{k=0}^{3}a_k x^k
 \end{equation}
 \begin{equation}
-g(x)=\sum_{k=0}^{3}b_k x^k
+	g(x)=\sum_{k=0}^{3}b_k x^k
 \end{equation}
 Where ${f(x)}$ and ${g(x)}$ are the equations to fit the line along the x, which is the axis with the same direction of the insertion. ${(a_0,a_1,a_2,a_3)}$ and ${(b_0,b_1,b_2,b_3)}$ are the free parameters of the needle shape model.
 
@@ -421,7 +408,8 @@ The whole scan length is at most 160 mm which depends on the scan intervals (sho
 \centering
 \includegraphics[width=0.9\textwidth]{figures/2/f6.pdf}
 \captionsetup{width=16 cm,justification=centering}
-\caption{The devices of the experiment.}\label{fig:6}
+\caption{The devices of the experiment.}
+\label{fig:6}
 \end{figure}
 
 Before data collection, the US image and the marker need to be calibrated. After that, the experiment starts after the needle finished puncturing manually. Robot arm is used to move the US probe scanning along the needle. Meanwhile, pose data are collected from the optical tracker and US images from the Ultrasound scanner. Finally, the tail of the needle and its tip are measured by the optical and electromagnetic sensors respectively for the curve fitting and the tip validation. The needle is inserted manually, imitating the real situations of percutaneous interventions.
@@ -493,14 +481,14 @@ The error of the algorithm is shown in table 2, which suggests that the errors i
 \rowcolor{gray!70} \multicolumn{5}{c}{\textbf{Accuracy}}\\
 \hline \rowcolor{gray!50}\textbf{Intervals}  & \textbf{Water}  & \textbf{Phantom}   & \textbf{Pork}   & \textbf{Chicken}\\
 %\midrule
- 1 mm   &${0.32\pm0.10}$   &${0.33\pm0.15}$    &${0.37\pm0.07}$    &${0.29\pm0.09}$\\
-2 mm   &${0.36\pm0.21}$   &${0.41\pm0.16}$    &${0.31\pm0.05}$    &${0.31\pm0.12}$\\
-3 mm   &${0.45\pm0.16}$   &${0.46\pm0.18}$    &${0.56\pm0.08}$    &${0.33\pm0.09}$\\
-4 mm	&${0.55\pm0.16}$	&${0.59\pm0.31}$	&${0.68\pm0.14}$	&${0.38\pm0.21}$\\
-5 mm	&${0.60\pm0.13}$	&${0.59\pm0.29}$	&${0.90\pm0.20}$	&${0.40\pm0.14}$\\
-6 mm	&${0.69\pm0.13}$	&${0.48\pm0.09}$	&${0.99\pm0.13}$	&${0.55\pm0.11}$\\
-7 mm	&${0.83\pm0.17}$	&${0.62\pm0.14}$	&${0.84\pm0.30}$	&${0.52\pm0.17}$\\
-8 mm	&${0.95\pm0.11}$	&${0.73\pm0.26}$	&${1.06\pm0.18}$	&${0.81\pm0.19}$\\
+    1 mm   &${0.32\pm0.10}$   &${0.33\pm0.15}$    &${0.37\pm0.07}$    &${0.29\pm0.09}$\\
+    2 mm   &${0.36\pm0.21}$   &${0.41\pm0.16}$    &${0.31\pm0.05}$    &${0.31\pm0.12}$\\
+    3 mm   &${0.45\pm0.16}$   &${0.46\pm0.18}$    &${0.56\pm0.08}$    &${0.33\pm0.09}$\\
+    4 mm	&${0.55\pm0.16}$	&${0.59\pm0.31}$	&${0.68\pm0.14}$	&${0.38\pm0.21}$\\
+    5 mm	&${0.60\pm0.13}$	&${0.59\pm0.29}$	&${0.90\pm0.20}$	&${0.40\pm0.14}$\\
+    6 mm	&${0.69\pm0.13}$	&${0.48\pm0.09}$	&${0.99\pm0.13}$	&${0.55\pm0.11}$\\
+    7 mm	&${0.83\pm0.17}$	&${0.62\pm0.14}$	&${0.84\pm0.30}$	&${0.52\pm0.17}$\\
+    8 mm	&${0.95\pm0.11}$	&${0.73\pm0.26}$	&${1.06\pm0.18}$	&${0.81\pm0.19}$\\
 \bottomrule
 \end{tabular}
 \end{table}
