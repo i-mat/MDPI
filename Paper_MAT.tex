@@ -153,32 +153,32 @@ The histogram method tends to find an area of high intensity pixels, which inten
 The background reinforce part can be described as follows:
 
 \begin{equation}
-\begin{aligned}
-\textrm{min} \quad & \quad I_t \\
-%\end{equation}
-%\begin{equation}
-\textrm{s.t.} \quad & \sum_{I_t}^{255} n_{I_j} \leq M\delta \\
- &I_t\in[0,255] \\
-\end{aligned}
+	\begin{aligned}
+		\textrm{min} \quad  & \quad I_t                             \\
+		%\end{equation}
+		%\begin{equation}
+		\textrm{s.t.} \quad & \sum_{I_t}^{255} n_{I_j} \leq M\delta \\
+		                    & I_t\in[0,255]                         \\
+	\end{aligned}
 \end{equation}
 where ${I_j}$ is the grey level of the pixel and ${n_{I_j}}$ is the number of pixels which have the grey level of ${I_j}$.
 ${M}$ is the size of ROI, and ${\delta}$ is the manually selected parameter to limit the bright pixels.
 In this work, ${M}$ is the square of ${45\times45}$, and ${\delta}$ was set to 0.08 based on empirical tests.
 
 \begin{figure}[H]
-\centering
-\subfigure[Elimination of Comet tail.]
-{
-\label{fig:3a}
-\includegraphics[width=\textwidth]{figures/2/f3a.pdf}
-}
-\subfigure[Poor reflection.] {
-\label{fig:3b}
-\includegraphics[width=\textwidth]{figures/2/f3b.pdf}
-}
-\captionsetup{width=16 cm,justification=centering}
-\caption{Two cases may generate the errors: (a) the comet tail of needle with binary method process, histogram method process and the histogram of ROI; (b) the poor reflection of the needle with histogram method process and the histogram of ROI.}
-\label{fig:3}
+	\centering
+	\subfigure[Elimination of Comet tail.]
+	{
+		\label{fig:3a}
+		\includegraphics[width=\textwidth]{figures/2/f3a.pdf}
+	}
+	\subfigure[Poor reflection.] {
+		\label{fig:3b}
+		\includegraphics[width=\textwidth]{figures/2/f3b.pdf}
+	}
+	\captionsetup{width=16 cm,justification=centering}
+	\caption{Two cases may generate the errors: (a) the comet tail of needle with binary method process, histogram method process and the histogram of ROI; (b) the poor reflection of the needle with histogram method process and the histogram of ROI.}
+	\label{fig:3}
 \end{figure}
 
 %Although the binary method can detect the needle in most images,
@@ -223,15 +223,15 @@ The update stage is the result of needle position after the measurement from his
 
 The state prediction ${\hat{t}_i}$ intends to represent the prediction state of the transverse needle center position ${(x, y, z)}$ in the reference frame with the change of the needle position ${(\triangle x,\triangle y,\triangle z)}$ at sample ${i}$ according to the state t. ${(\triangle x,\triangle y,\triangle z)}$ are the difference between the previous needle position and the current needle position. ${t_i}$ is the result from the previous iteration which is as follows:
 \begin{equation}
-t_i =
-\begin{bmatrix}
-x_i\\
-y_i\\
-z_i\\
-\triangle x_i\\
-\triangle y_i\\
-\triangle z_i
-\end{bmatrix}
+	t_i =
+	\begin{bmatrix}
+		x_i           \\
+		y_i           \\
+		z_i           \\
+		\triangle x_i \\
+		\triangle y_i \\
+		\triangle z_i 
+	\end{bmatrix}
 \end{equation}
 %For the controlled variable of the robot arm, it can be considered as the movement of the marker bound on the robot arm. Therefore, the controlled variable can be equivalent to ${\tilde{u}_k}$, which is the difference of two adjacent positions of the marker, displayed as:
 %\begin{equation}
@@ -240,44 +240,46 @@ z_i\\
 Where ${\triangle x_1}$ and ${\triangle y_1}$ are set to be 0, while ${\triangle z_1}$ is equal to the scan interval.
 Then, the prediction equations are as follows:
 \begin{equation}
-\hat{t}_i= At_{i-1}
+	\hat{t}_i= At_{i-1}
 \end{equation}
 \begin{equation}
-\hat{P}_i=AP_{i-1}A^T+Q
+	\hat{P}_i=AP_{i-1}A^T+Q
 \end{equation}
 The measurement update equations are as follows:
 \begin{equation}
-K_i=\hat{P}_iH^T(H\hat{P}_iH^T+R)^{-1}
+	K_i=\hat{P}_iH^T(H\hat{P}_iH^T+R)^{-1}
 \end{equation}
 \begin{equation}
-\label{eq:6}
-t_i=\hat{t}_i+K_i(m_i-H\hat{t}_i)
+	\label{eq:6}
+	t_i=\hat{t}_i+K_i(m_i-H\hat{t}_i)
 \end{equation}
 \begin{equation}
-P_i=(I- K_iH)\hat{P}_i
+	P_i=(I- K_iH)\hat{P}_i
 \end{equation}
 Where A, H, R and Q are:
 \begin{equation}
-A =
-\begin{bmatrix}
-1 \quad 0 \quad 0 \quad 1 \quad 0 \quad 0\\
-0 \quad 1 \quad 0 \quad 0 \quad 1 \quad 0\\
-0 \quad 0 \quad 1 \quad 0 \quad 0 \quad 1\\
-0 \quad 0 \quad 0 \quad 1 \quad 0 \quad 0\\
-0 \quad 0 \quad 0 \quad 0 \quad 1 \quad 0\\
-0 \quad 0 \quad 0 \quad 0 \quad 0 \quad 1\\
-\end{bmatrix}
+	A =
+	\begin{bmatrix}
+		1 \quad 0 \quad 0 \quad 1 \quad 0 \quad 0 \\
+		0 \quad 1 \quad 0 \quad 0 \quad 1 \quad 0 \\
+		0 \quad 0 \quad 1 \quad 0 \quad 0 \quad 1 \\
+		0 \quad 0 \quad 0 \quad 1 \quad 0 \quad 0 \\
+		0 \quad 0 \quad 0 \quad 0 \quad 1 \quad 0 \\
+		0 \quad 0 \quad 0 \quad 0 \quad 0 \quad 1 \\
+	\end{bmatrix}
 \end{equation}
+
 \begin{equation}
-H=
-\begin{bmatrix}
-I_{6\times6}
-\end{bmatrix}
-,R=Q=10^{-6}\times
-\begin{bmatrix}
-I_{6\times6}
-\end{bmatrix}
+	H=
+	\begin{bmatrix}
+		I_{6\times6} 
+	\end{bmatrix}
+	,R=Q=10^{-6}\times
+	\begin{bmatrix}
+		I_{6\times6} 
+	\end{bmatrix}
 \end{equation}
+
 A is the state transition matrix, H is the measurement matrix. ${\hat{P}_i}$, ${P_i}$ are the priori and posteriori estimate error covariance, and R, Q are the measurement error covariance and processing error covariance respectively.
 ${K_i}$ is the Kalman gain at sample i.
 ${m_i}$ is the measurement state from the needle detection.
@@ -307,9 +309,9 @@ Before tip estimation, 2D points should be transformed to 3D points based on the
 	\centering
 	\includegraphics[width=8.2 cm]{figures/2/f5.pdf}
 	\captionsetup{width=16 cm,justification=centering}
-    \caption{The relationship of the frames.}
-    \label{fig:5}
-\end{figure}re
+	\caption{The relationship of the frames.}
+	\label{fig:5}
+\end{figure}
 
 As shown in Figure \ref{fig:5}, the image has one plane with 2 axis (axis x and axis y) and axis z is vertical to the image. Moreover, the probe has the completely same frame with image, except that the probe frame is designed in millimeters and the image frame is set in pixels. Equation (9) implies the transformation from image to reference:
 \begin{equation}
@@ -328,38 +330,38 @@ Where ${f(x)}$ and ${g(x)}$ are the equations to fit the line along the x, which
 
 After sample points of the inflected needle have been obtained, least square curve fitting method will be used to fit these points as a cubic line. The target functions to fit the cubic line can be defined as follows:
 \begin{equation}
-F(a_0,a_1,a_2,a_3)=\min\sum_{i=1}^{n}(f(x_i)-y_i)^2 =\min\sum_{i=1}^{n}(\sum_{k=0}^{3}a_k x_i^k-y_i)^2
+	F(a_0,a_1,a_2,a_3)=\min\sum_{i=1}^{n}(f(x_i)-y_i)^2 =\min\sum_{i=1}^{n}(\sum_{k=0}^{3}a_k x_i^k-y_i)^2
 \end{equation}
 \begin{equation}
-G(b_0,b_1,b_2,b_3)=\min\sum_{i=1}^{n}(g(x_i)-z_i)^2 =\min\sum_{i=1}^{n}(\sum_{k=0}^{3}b_k x_i^k-z_i)^2
+	G(b_0,b_1,b_2,b_3)=\min\sum_{i=1}^{n}(g(x_i)-z_i)^2 =\min\sum_{i=1}^{n}(\sum_{k=0}^{3}b_k x_i^k-z_i)^2
 \end{equation}
 where n is the number of the points ${(n\geq4)}$ and ${(x_i,y_i,z_i)}$ is the position of point ${i}$. By applying the ${l_2}$ norm minimization in the two dimensional Euclidean space, it can be formulated as:
 \begin{equation}
-\mathop{\arg\min}_{t\in R} {\|X{\textbf{\textit{a}}}-Y\|}_2
+	\mathop{\arg\min}_{t\in R} {\|X{\textbf{\textit{a}}}-Y\|}_2
 \end{equation}
 where ${{\textbf{\textit{a}}}=[a_0,a_1,a_2,a_3]'}$, ${Y=[y_1,y_2,\ldots,y_n]'}$ and ${X}$ can be written as:
 \begin{equation}
-X= \begin{bmatrix}
-1&x_1&{x_1}^2&{x_1}^3\\
-1&x_2&{x_2}^2&{x_2}^3\\
-\vdots&\vdots&\vdots&\vdots\\
-1&x_n&{x_n}^2&{x_n}^3
-\end{bmatrix}
+	X= \begin{bmatrix}
+	1&x_1&{x_1}^2&{x_1}^3\\
+	1&x_2&{x_2}^2&{x_2}^3\\
+	\vdots&\vdots&\vdots&\vdots\\
+	1&x_n&{x_n}^2&{x_n}^3
+	\end{bmatrix}
 \end{equation}
 
 The solution can be estimated as follows:
 \begin{equation}
-{\textbf{\textit{a}}}={(X^T X)}^{-1} X^T  Y
+	{\textbf{\textit{a}}}={(X^T X)}^{-1} X^T  Y
 \end{equation}
 From this solution, ${f(x)}$ and ${g(x)}$ can be obtained to construct needle shape. The tip position can then be estimated by the following optimum solutions based on the length of the needle:
 \begin{equation}
-\centering
-\begin{aligned}
-\textrm{min} \quad & \|\int_{{tail}_x}^{{tip}_x}\sqrt{1+{\acute{f(x)}}^2+{\acute{g(x)}}^2 }dx-L\|_2\\
-%\end{equation}
-%\begin{equation}
-\textrm{s.t.} \quad & {tip}_x>{tail}_x \\
-\end{aligned}
+	\centering
+	\begin{aligned}
+		\textrm{min} \quad  & \|\int_{{tail}_x}^{{tip}_x}\sqrt{1+{\acute{f(x)}}^2+{\acute{g(x)}}^2 }dx-L\|_2 \\
+		%\end{equation}
+		%\begin{equation}
+		\textrm{s.t.} \quad & {tip}_x>{tail}_x                                                               \\
+	\end{aligned}
 \end{equation}
 
 %\begin{equation}
@@ -385,112 +387,116 @@ During the experiment, the robot arm automatically moves with ultrasound probe a
 The whole scan length is at most 160 mm which depends on the scan intervals (shown in table 1). The scan interval decreases with the increasing collected points.
 
 \begin{table}[H]
-\caption{Scan lengths with different scan intervals.}
-\centering
-%% \tablesize{} %% You can specify the fontsize here, e.g., \tablesize{\footnotesize}. If commented out \small will be used.
-\begin{tabular}{ccc}
-%\toprule
-\rowcolor{gray!40}\textbf{Scan Interval}  & \textbf{Scan Length}  & \textbf{Points}\\
-%\midrule
-\hline 1 mm    & 160 mm    & 160\\
-\hline 2 mm    & 159 mm    & 80\\
-\hline 3 mm    & 160 mm    & 54\\
-\hline 4 mm    & 157 mm    & 40\\
-\hline 5 mm    & 156 mm    & 32\\
-\hline 6 mm    & 157 mm    & 27\\
-\hline 7 mm    & 155 mm    & 23\\
-\hline 8 mm    & 153 mm    & 20\\
-\bottomrule
-\end{tabular}
+	\caption{Scan lengths with different scan intervals.}
+	\centering
+	%% \tablesize{} %% You can specify the fontsize here, e.g., \tablesize{\footnotesize}. If commented out \small will be used.
+	\begin{tabular}{ccc}
+		%\toprule
+		\rowcolor{gray!40}\textbf{Scan Interval} & \textbf{Scan Length} & \textbf{Points} \\
+		%\midrule
+		\hline 1 mm                              & 160 mm               & 160             \\
+		\hline 2 mm                              & 159 mm               & 80              \\
+		\hline 3 mm                              & 160 mm               & 54              \\
+		\hline 4 mm                              & 157 mm               & 40              \\
+		\hline 5 mm                              & 156 mm               & 32              \\
+		\hline 6 mm                              & 157 mm               & 27              \\
+		\hline 7 mm                              & 155 mm               & 23              \\
+		\hline 8 mm                              & 153 mm               & 20              \\
+		\bottomrule
+	\end{tabular}
 \end{table}
 
 \begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{figures/2/f6.pdf}
-\captionsetup{width=16 cm,justification=centering}
-\caption{The devices of the experiment.}
-\label{fig:6}
+	\centering
+	\includegraphics[width=0.9\textwidth]{figures/2/f6.pdf}
+	\captionsetup{width=16 cm,justification=centering}
+	\caption{The devices of the experiment.}
+	\label{fig:6}
 \end{figure}
 
 Before data collection, the US image and the marker need to be calibrated. After that, the experiment starts after the needle finished puncturing manually. Robot arm is used to move the US probe scanning along the needle. Meanwhile, pose data are collected from the optical tracker and US images from the Ultrasound scanner. Finally, the tail of the needle and its tip are measured by the optical and electromagnetic sensors respectively for the curve fitting and the tip validation. The needle is inserted manually, imitating the real situations of percutaneous interventions.
 
 \begin{figure}[H]
-\setlength{\subfigcapskip}{-1bp}
-\centering
-\begin{minipage}{\textwidth}
-\centering
-\subfigure{\label{fig:002a}}\addtocounter{subfigure}{-1}
-\subfigure[Phantom with inserted needle]{
-\includegraphics[width=0.4\textwidth]{figures/2/fz_2a.jpg}}
-\hspace{2em}
-\subfigure{\label{fig:002b}}\addtocounter{subfigure}{-1}
-\subfigure[The probe scans without any contact]{
-\includegraphics[width=0.4\textwidth]{figures/2/fz_2b.jpg}}
-\end{minipage}
-\vspace{0.1em}
-\caption[The phantom used in the experiment and the movement of the probe.]{The phantom used in the experiment and the movement of the probe.}\label{fig:002}
+	\setlength{\subfigcapskip}{-1bp}
+	\centering
+	\begin{minipage}{\textwidth}
+		\centering
+		\subfigure{\label{fig:002a}}\addtocounter{subfigure}{-1}
+		\subfigure[Phantom with inserted needle]{
+			\includegraphics[width=0.4\textwidth]{figures/2/fz_2a.jpg}}
+		\hspace{2em}
+		\subfigure{\label{fig:002b}}\addtocounter{subfigure}{-1}
+		\subfigure[The probe scans without any contact]{
+			\includegraphics[width=0.4\textwidth]{figures/2/fz_2b.jpg}}
+	\end{minipage}
+	\vspace{0.1em}
+	\caption[The phantom used in the experiment and the movement of the probe.]{The phantom used in the experiment and the movement of the probe.}
+	\label{fig:002}
 \end{figure}
-
+    
 \subsection{Tip estimation}
 Four kinds of platforms have been used in the experiments, water, phantom, chicken, and pork. Each platform has been tested several times. Figure \ref{fig:7} shows one test in chicken breast. In this case, the US probe moved along the needle in the chicken breast every 4 mm. The black square point on the left is the needle tail position and the blue line is the estimated needle shape. The green points are the detected needle and considered as the center of the needle, the blue point is the estimated tip position and the red point is measured tip position from EM. The estimation error is 0.69 mm in this test.
 \begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{figures/2/f7.pdf}
-\captionsetup{width=14 cm,justification=centering}
-\caption{Experiment in chicken breast with 4 mm scan interval.}\label{fig:7}
+	\centering
+	\includegraphics[width=\textwidth]{figures/2/f7.pdf}
+	\captionsetup{width=14 cm,justification=centering}
+	\caption{Experiment in chicken breast with 4 mm scan interval.}
+	\label{fig:7}
 \end{figure}
 
 The error of the algorithm is shown in table 2, which suggests that the errors increase with the increase of scan intervals. Figure \ref{fig:8} shows the results of the experiment on four platforms. The mean errors are all under 0.4 mm with 1 mm scan interval in the four experiments, while the error is around 1 mm with 8 mm.
 
 \begin{figure}[H]
-\setlength{\subfigcapskip}{-1bp}
-\centering
-\begin{minipage}{\textwidth}
-\centering
-\subfigure{\label{fig:8a}}\addtocounter{subfigure}{-1}
-    \subfigure[The Experiments in Water.]{
-    \includegraphics[width=0.4\textwidth]{figures/2/f8a.pdf}
-    }
-\hspace{1em}
-\subfigure{\label{fig:8b}}\addtocounter{subfigure}{-1}
-    \subfigure[The Experiments in Phantom.]{
-    \includegraphics[width=0.4\textwidth]{figures/2/f8b.pdf}
-    }
-\end{minipage}
-\centering
-\begin{minipage}{\textwidth}
-\centering
-\subfigure{\label{fig:8c}}\addtocounter{subfigure}{+1}
-    \subfigure[The Experiments in Pork.]{
-    \includegraphics[width=0.4\textwidth]{figures/2/f8c.pdf}
-    }
-\hspace{1em}
-\subfigure{\label{fig:8d}}\addtocounter{subfigure}{-1}
-    \subfigure[The Experiments in Chicken.]{
-    \includegraphics[width=0.4\textwidth]{figures/2/f8d.pdf}
-    }
-\end{minipage}
-\caption{The experiment with different scan intervals on four platform.}\label{fig:8}
+	\setlength{\subfigcapskip}{-1bp}
+	\centering
+	\begin{minipage}{\textwidth}
+		\centering
+		\subfigure{\label{fig:8a}}\addtocounter{subfigure}{-1}
+		\subfigure[The Experiments in Water.]{
+			\includegraphics[width=0.4\textwidth]{figures/2/f8a.pdf}
+		}
+		\hspace{1em}
+		\subfigure{\label{fig:8b}}\addtocounter{subfigure}{-1}
+		\subfigure[The Experiments in Phantom.]{
+			\includegraphics[width=0.4\textwidth]{figures/2/f8b.pdf}
+		}
+    \end{minipage}
+    
+	\centering
+	\begin{minipage}{\textwidth}
+		\centering
+		\subfigure{\label{fig:8c}}\addtocounter{subfigure}{+1}
+		\subfigure[The Experiments in Pork.]{
+			\includegraphics[width=0.4\textwidth]{figures/2/f8c.pdf}
+		}
+		\hspace{1em}
+		\subfigure{\label{fig:8d}}\addtocounter{subfigure}{-1}
+		\subfigure[The Experiments in Chicken.]{
+			\includegraphics[width=0.4\textwidth]{figures/2/f8d.pdf}
+		}
+	\end{minipage}
+	\caption{The experiment with different scan intervals on four platform.}
+	\label{fig:8}
 \end{figure}
 
 \begin{table}[H]
-\caption{The Results of Tip Estimation (mm).}
-\centering
-\begin{tabular}{p{2cm}<{\centering}|p{2cm}<{\centering}|p{2cm}<{\centering}|p{2cm}<{\centering}|p{2cm}<{\centering}}
-%\toprule
-\rowcolor{gray!70} \multicolumn{5}{c}{\textbf{Accuracy}}\\
-\hline \rowcolor{gray!50}\textbf{Intervals}  & \textbf{Water}  & \textbf{Phantom}   & \textbf{Pork}   & \textbf{Chicken}\\
-%\midrule
-    1 mm   &${0.32\pm0.10}$   &${0.33\pm0.15}$    &${0.37\pm0.07}$    &${0.29\pm0.09}$\\
-    2 mm   &${0.36\pm0.21}$   &${0.41\pm0.16}$    &${0.31\pm0.05}$    &${0.31\pm0.12}$\\
-    3 mm   &${0.45\pm0.16}$   &${0.46\pm0.18}$    &${0.56\pm0.08}$    &${0.33\pm0.09}$\\
-    4 mm	&${0.55\pm0.16}$	&${0.59\pm0.31}$	&${0.68\pm0.14}$	&${0.38\pm0.21}$\\
-    5 mm	&${0.60\pm0.13}$	&${0.59\pm0.29}$	&${0.90\pm0.20}$	&${0.40\pm0.14}$\\
-    6 mm	&${0.69\pm0.13}$	&${0.48\pm0.09}$	&${0.99\pm0.13}$	&${0.55\pm0.11}$\\
-    7 mm	&${0.83\pm0.17}$	&${0.62\pm0.14}$	&${0.84\pm0.30}$	&${0.52\pm0.17}$\\
-    8 mm	&${0.95\pm0.11}$	&${0.73\pm0.26}$	&${1.06\pm0.18}$	&${0.81\pm0.19}$\\
-\bottomrule
-\end{tabular}
+	\caption{The Results of Tip Estimation (mm).}
+	\centering
+	\begin{tabular}{p{2cm}<{\centering}|p{2cm}<{\centering}|p{2cm}<{\centering}|p{2cm}<{\centering}|p{2cm}<{\centering}}
+		%\toprule
+		\rowcolor{gray!70} \multicolumn{5}{c}{\textbf{Accuracy}}\\
+		\hline \rowcolor{gray!50}\textbf{Intervals} & \textbf{Water}  & \textbf{Phantom} & \textbf{Pork}   & \textbf{Chicken} \\
+		%\midrule
+		1 mm  & ${0.32\pm0.10}$ & ${0.33\pm0.15}$  & ${0.37\pm0.07}$ & ${0.29\pm0.09}$  \\
+		2 mm  & ${0.36\pm0.21}$ & ${0.41\pm0.16}$  & ${0.31\pm0.05}$ & ${0.31\pm0.12}$  \\
+		3 mm  & ${0.45\pm0.16}$ & ${0.46\pm0.18}$  & ${0.56\pm0.08}$ & ${0.33\pm0.09}$  \\
+		4 mm  & ${0.55\pm0.16}$ & ${0.59\pm0.31}$  & ${0.68\pm0.14}$ & ${0.38\pm0.21}$  \\
+		5 mm  & ${0.60\pm0.13}$ & ${0.59\pm0.29}$  & ${0.90\pm0.20}$ & ${0.40\pm0.14}$  \\
+		6 mm  & ${0.69\pm0.13}$ & ${0.48\pm0.09}$  & ${0.99\pm0.13}$ & ${0.55\pm0.11}$  \\
+		7 mm  & ${0.83\pm0.17}$ & ${0.62\pm0.14}$  & ${0.84\pm0.30}$ & ${0.52\pm0.17}$  \\
+		8 mm  & ${0.95\pm0.11}$ & ${0.73\pm0.26}$  & ${1.06\pm0.18}$ & ${0.81\pm0.19}$  \\
+		\bottomrule
+	\end{tabular}
 \end{table}
 
 \section{Discussion \& Conclusion}
